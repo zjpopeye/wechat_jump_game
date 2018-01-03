@@ -81,8 +81,29 @@ def jump(distance):
     跳跃一定的距离
     '''
     press_time = distance * press_coefficient
-    press_time = max(press_time, 200)   # 设置 200ms 是最小的按压时间
+    press_time = max(press_time, 210)   # 设置 200ms 是最小的按压时间
     press_time = int(press_time)
+    if(press_time < 300):
+        press_time += 35
+    elif(press_time < 400):
+        press_time += 30
+    elif(press_time < 500):
+        press_time += 25
+    elif (press_time < 600):
+        press_time += 20
+    elif (press_time < 650):
+        press_time += 15
+    elif (press_time < 700):
+        press_time += 10
+    elif (press_time > 950):
+        press_time -= 20
+    elif (press_time > 900):
+        press_time -= 10
+    elif(press_time > 850):
+        press_time -= 5
+
+
+
     cmd = 'adb shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
         x1=swipe_x1,
         y1=swipe_y1,
@@ -248,14 +269,14 @@ def main():
             debug.save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y)
             debug.backup_screenshot(ts)
         i += 1
-        if i == next_rest:
-            print('已经连续打了 {} 下，休息 {}s'.format(i, next_rest_time))
-            for j in range(next_rest_time):
-                sys.stdout.write('\r程序将在 {}s 后继续'.format(next_rest_time - j))
-                sys.stdout.flush()
-                time.sleep(1)
-            print('\n继续')
-            i, next_rest, next_rest_time = 0, random.randrange(30, 100), random.randrange(10, 60)
+        # if i == next_rest:
+        #     print('已经连续打了 {} 下，休息 {}s'.format(i, next_rest_time))
+        #     for j in range(next_rest_time):
+        #         sys.stdout.write('\r程序将在 {}s 后继续'.format(next_rest_time - j))
+        #         sys.stdout.flush()
+        #         time.sleep(1)
+        #     print('\n继续')
+        #     i, next_rest, next_rest_time = 0, random.randrange(30, 100), random.randrange(10, 60)
         time.sleep(random.uniform(0.9, 1.2))   # 为了保证截图的时候应落稳了，多延迟一会儿，随机值防 ban
 
 
